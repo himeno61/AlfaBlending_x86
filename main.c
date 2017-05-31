@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 		unsigned char* file1 = readBMP(argv[1], &size1, &height1, &width1);
 		unsigned char* file2 = readBMP(argv[2], &size2, &height2, &width2);
 		int k = atoi(argv[3]) ;
-
+/*
 		allegro_init();
 		set_color_depth( 32 );
 		set_gfx_mode( GFX_AUTODETECT_WINDOWED, 1000, 1000, 0, 0 );
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 					clear_to_color( screen, makecol( 0, 0, 0 ) );
 				
 					klawisz = klawisz-48;
-					if(klawisz <0 || klawisz>9) break;        
+					if(klawisz <-1 || klawisz>9) break;        
 					textout_ex(screen, font, "X: ", 30, 40,makecol(255, 255, 255), -1);
 					
 					if(counter1 != 0)
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 					clear_to_color( screen, makecol( 0, 0, 0 ) );
 				
 					klawisz = klawisz-48;
-					if(klawisz <0 || klawisz>9) break;
+					if(klawisz <-1 || klawisz>9) break;
 					textout_ex(screen, font, "Y: ", 30, 40,makecol(255, 255, 255), -1);
 					if(counter2 != 0)
 					{
@@ -108,10 +108,10 @@ int main(int argc, char **argv)
 					klawisz = ureadkey(&scancode);
 				
 				}
-
+				*/
 
 			unsigned char* file3 = (unsigned char*)malloc(size1);
-			transfer(file1,file2,height1,width1,k,file3,val1,val2);
+			transfer(file1,file2,height1,width1,k,file3,410,230);
 			readHeader(argv[1], header);
 		
 			FILE *fd = fopen("wynik.bmp", "w");
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 			fclose(fd);
 			free(file3);
 		
-		
+		/*
 			obrazek = load_bmp( "wynik.bmp", default_palette );
 			if( !obrazek )
 			{
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 			readkey();
 		
 		}
-	end:
+	end:*/
 		free(file1);
 		free(file2);
 		return 0;
