@@ -9,6 +9,7 @@ funkcja.o: funkcja.asm
 	nasm -f elf64 funkcja.asm -o funkcja.o
 clean:
 	rm -f *.o
-	rm program
+	rm program -f
+	rm wynik.bmp
 
 
