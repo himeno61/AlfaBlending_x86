@@ -21,13 +21,13 @@ void readHeader(char *filename, unsigned char* head)
 unsigned char* readBMP(char* filename, int *size_file,int *height,int *width)
 {
 
-    FILE* f = fopen(filename, "r");
-    unsigned char info[54];
-    fread(info, sizeof(unsigned char), 54, f);
+	FILE* f = fopen(filename, "r");
+	unsigned char info[54];
+	fread(info, sizeof(unsigned char), 54, f);
 
 	
-    *width = *(int*)&info[18];
-    *height = *(int*)&info[22];
+	*width = *(int*)&info[18];
+	*height = *(int*)&info[22];
 	*size_file = *(int*)&info[2]; 
 
 
@@ -50,6 +50,7 @@ int main(int argc, char **argv)
 		int k = atoi(argv[3]) ;
 
 		allegro_init();
+		set_window_title("AlfaBlending");
 		set_color_depth( 32 );
 		set_gfx_mode( GFX_AUTODETECT_WINDOWED, 1000, 1000, 0, 0 );
 		install_keyboard();
@@ -61,50 +62,55 @@ int main(int argc, char **argv)
 		{
 			int klawisz = 48;
 			int val1 = 0 ,val2 = 0;
-			int counter1 = 0,counter2 = 0;
 			int scancode;
 			///reading X
-			
-				while( klawisz != 13 )
+				do
 				{
-					if(klawisz == 27) goto end;
 					clear_to_color( screen, makecol( 0, 0, 0 ) );
 				
 					klawisz = klawisz-48;
-					if(klawisz <-1 || klawisz>9) break;        
+					if(klawisz <0 || klawisz>9) break;        
 					textout_ex(screen, font, "X: ", 30, 40,makecol(255, 255, 255), -1);
 					
-					if(counter1 != 0)
-					{
-						val1 += klawisz*counter1;
-						counter1 = counter1*10; 
-					}
-						else counter1=1;
+					val1 = val1*10 + klawisz;
 					textprintf_ex( screen, font,50, 40,makecol( 255, 255, 255 ), 0,"%d",val1 );
 				
 					textout_ex(screen, font, "Alfablending vbeta.0", 10, 10,makecol(255, 255, 255), -1);
 					klawisz = ureadkey(&scancode);
-				
-				}
+					if(klawisz == 27) 
+					{
+						free(file1);
+						free(file2);
+						allegro_exit();
+						return 0;
+					}
+				}while( klawisz != 13 );
 				klawisz = 48;
 				while( klawisz != 13 )
 				{
-					if(klawisz == 27) goto end;
+					if(klawisz == 27)
+					if(klawisz == 27) 
+					{
+						free(file1);
+						free(file2);
+						allegro_exit();
+						return 0;
+					}
 					clear_keybuf();
 					clear_to_color( screen, makecol( 0, 0, 0 ) );
 				
 					klawisz = klawisz-48;
 					if(klawisz <-1 || klawisz>9) break;
-					textout_ex(screen, font, "Y: ", 30, 40,makecol(255, 255, 255), -1);
-					if(counter2 != 0)
-					{
-						val2 += klawisz*counter2;
-						counter2 = counter2*10;
-					}
-						else counter2=1;
-					textprintf_ex( screen, font,50, 40,makecol( 255, 255, 255 ), 0,"%d",val2 );
-				
+					val2 = val2*10 + klawisz;
 					textout_ex(screen, font, "Alfablending vbeta.0", 10, 10,makecol(255, 255, 255), -1);
+					
+					textout_ex(screen, font, "X: ", 30, 40,makecol(255, 255, 255), -1);
+					textprintf_ex( screen, font,50, 40,makecol( 255, 255, 255 ), 0,"%d",val1 );
+					
+					textout_ex(screen, font, "Y: ", 90, 40,makecol(255, 255, 255), -1);
+					textprintf_ex( screen, font,110, 40,makecol( 255, 255, 255 ), 0,"%d",val2 );
+				
+
 					klawisz = ureadkey(&scancode);
 				
 				}
@@ -118,7 +124,10 @@ int main(int argc, char **argv)
 			if(!fd)
 			{
 				puts("Blad zapisu");
-				return -1;
+				free(file1);
+				free(file2);
+				allegro_exit();
+				return 0;
 			}
 			fwrite(header, sizeof(unsigned char), 54, fd);
 			fwrite(file3, sizeof(unsigned char), size1, fd);
@@ -141,7 +150,6 @@ int main(int argc, char **argv)
 			readkey();
 		
 		}
-	end:
 		free(file1);
 		free(file2);
 		return 0;
